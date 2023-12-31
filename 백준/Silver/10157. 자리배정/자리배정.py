@@ -20,6 +20,7 @@ else:
         seats[x][y]=i+1
         if i+1==k:
             print(x+1,y+1)
+            break
         if dir == 'U' and (x == 0 or seats[x-1][y] != 0):
             dir = "R"
         elif dir == 'R' and (y == c - 1 or seats[x][y+1] != 0):
