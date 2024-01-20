@@ -1,12 +1,12 @@
 import sys
 from collections import deque
 
+input = sys.stdin.readline
 n = int(input())
-graph = {}
 
+graph = {}
 for i in range(1,n+1):
     graph[i] = []
-
 for i in range(1,n):
     start, end = map(int,input().split())
     graph[start].append(end) 
