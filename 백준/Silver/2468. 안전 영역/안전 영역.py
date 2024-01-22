@@ -4,7 +4,6 @@ import copy
 
 input = sys.stdin.readline
 
-
 n = int(input())
 
 grid = []
@@ -39,7 +38,6 @@ for k in range(1,100):
                 tmp_grid[i][j] = 0
 
     # bfs로 안전지대 탐색하여 지역 정보 저장
-    # 가장 큰 지대 반환
     safe_areas = []
     directions = [[-1,0],[0,1],[1,0],[0,-1]]
     for i in range(n):
@@ -49,8 +47,6 @@ for k in range(1,100):
 
     results.append(len(safe_areas))
 
-# print(grid)
-# print(results)
 if max(results)==0:
     print(1)
 else:
