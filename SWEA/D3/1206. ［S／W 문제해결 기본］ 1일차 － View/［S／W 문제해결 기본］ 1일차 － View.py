@@ -1,12 +1,22 @@
-for test_case in range(1,10 + 1):
-    count = int(input())
-    height = list(map(int,input().split()))
+for tc in range(10):
+    n = int(input())
+    numbers = list(map(int,input().split()))
 
-    # 좌우 두 칸 이내에
-    # 더 높은 수가 없으면 카운트
-    height_sum = 0
-    for i in range(2, count-2):
-        if height[i] > height[i-1] and height[i] > height[i-2] and height[i] > height[i+1] and height[i] > height[i+2]:
-            height_sum += height[i] - max(height[i-1], height[i-2], height[i+1], height[i+2])
+    memo = [0]*n
 
-    print(f'#{test_case} {height_sum}')
+    for i in range(2,n-2):
+        cur_hei = numbers[i]
+        b1_hei = numbers[i-2]
+        b2_hei = numbers[i-1]
+        n1_hei = numbers[i+1]
+        n2_hei = numbers[i+2]
+        b_n_max_hei = max(b1_hei,b2_hei,n1_hei,n2_hei)
+
+        # 현재 빌딩과 양쪽 빌딩 높이중 가장 높은 빌딩과의 차를 구함
+        diff = cur_hei - b_n_max_hei
+
+        # 차가 0보다 크면 memo에 기록
+        if diff > 0:
+            memo[i] += diff
+
+    print(f'#{tc+1} {sum(memo)}')
