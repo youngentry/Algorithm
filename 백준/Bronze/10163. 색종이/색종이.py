@@ -1,29 +1,18 @@
-# 색종이의 장수 N 1~100
-# 평면은 가로 1001, 세로 1001
+import sys
+input = sys.stdin.readline
 
-# 왼쪽아래 a,b 너비 c,d
-
+# 입력
 n = int(input())
+arr = [[0]*1001 for _ in range(1001)]
+for k in range(1,n+1):
+    x1,y1,x2,y2 = list(map(int,input().split()))
+    for i in range(x1,x1+x2):
+        for j in range(y1,y1+y2):
+            arr[i][j] = k
 
-grid = [[0 for _ in range(1001)] for _ in range(1001)]
+cnts = [0]*(n+1)
+for row in arr:
+    for j in row:
+        cnts[j] += 1
 
-for t_c in range(n):
-    a,b,c,d = map(int,input().split())
-    for i in range(a,a+c):
-        for j in range(b,b+d):
-            grid[i][j] = t_c+1
-
-filtered_grid = [[number for number in row if number != 0] for row in grid]
-
-answer = []
-for t_c in range(n):
-    count = 0
-    for row in filtered_grid:
-        for number in row:
-            if number == t_c+1:
-                count +=1
-    answer.append(count)
-
-
-for width in answer:
-    print(width) 
+print(*cnts[1:],sep='\n')
