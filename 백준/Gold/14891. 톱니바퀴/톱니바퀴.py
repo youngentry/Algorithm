@@ -24,55 +24,29 @@ def rotate(number, dir):
         if is_change[i-1][0]==False:
             is_change[i] = [False,1]
 
+    # 홀수번 톱니끼리, 짝수번 톱니끼리 같은 방향 회전
     for i in range(1,5):
-        # 1,3 번째고, 시계면
-        if (number)%2 == 1 and dir == 1:
-            # 1,3번째 1
-            if i%2==1:
-                is_change[i-1][1] = 1
-            # 2,4번째 -1
-            if i%2==0:
-                is_change[i-1][1] = -1
-        # 반시계면
-        elif (number)%2 == 1 and dir == -1:
-            if i%2==1:
-                is_change[i-1][1] = -1
-            # 2,4번째 -1
-            if i%2==0:
-                is_change[i-1][1] = 1
-        # 2,4 번째고, 시계면
-        elif (number)%2 == 0 and dir == 1:
-            # 1,3번째 1
-            if i%2==1:
-                is_change[i-1][1] = -1
-            # 2,4번째 1
-            if i%2==0:
-                is_change[i-1][1] = 1
-        # 반시계면
+        if i%2 == number%2:
+            is_change[i-1][1] = dir
         else:
-            if i%2==1:
-                is_change[i-1][1] = 1
-            # 2,4번째 -1
-            if i%2==0:
-                is_change[i-1][1] = -1
+            is_change[i-1][1] = -dir
 
     # [톱니번호, 회전방향]에 따라 회전
     for i in range(4):
         if is_change[i][0]:
             turn(i,is_change[i][1])
 
-
 def turn(number,dir):
     if dir == 1: # 시계
         topnis[number].insert(0,topnis[number].pop())
     elif dir == -1: # 반시계
         topnis[number].append(topnis[number].pop(0))
-    
-# 회전 시키기 전 상태에서 맞닿은 톱니의 극이 같으면 무시
-# 극이 다르면 회전 방향 반대로 회전을 시킨다
+
+# 회전 명령에 따라 수행
 for number, dir in spins:
     rotate(number,dir)
 
+# 12시 톱니에 따라 결과 반환
 count = 0
 for i in range(4):
     if topnis[i][0] == 1:
