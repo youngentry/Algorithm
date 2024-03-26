@@ -1,19 +1,18 @@
 import sys
-from heapq import heappop, heappush
-from collections import deque
+input = sys.stdin.readline
 # ==================================================
 
 def u_find(x):
     if parents[x] == x:
         return x
-
+    
     parents[x] = u_find(parents[x])
     return parents[x]
 
 
 def u_union(x,y):
-    x = parents[x]
-    y = parents[y]
+    x = u_find(x)
+    y = u_find(y)
 
     if x==y:
         return
@@ -29,8 +28,8 @@ graph = [list(map(int,input().split())) for _ in range(N)]
 parents = [i for i in range(N+1)]
 
 list = []
-for i in range(N):
-    for j in range(N):
+for i in range(N-1):
+    for j in range(i+1, N):
         if graph[i][j] != 0:
             list.append((graph[i][j],i,j))
 list.sort()
