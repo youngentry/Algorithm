@@ -1,12 +1,17 @@
 import sys
 input = sys.stdin.readline
 
-# N(1 ≤ N ≤ 40)과 M(1 ≤ M ≤ 40), 그리고 스티커의 개수 K(1 ≤ K ≤ 100)
-N,M,K = map(int,input().split())
+def rotate(base,longer):
+    rotated = [[0]*longer for _ in range(longer)]
+    for i in range(longer):
+        for j in range(longer):
+            rotated[j][longer-1-i] = base[i][j]
+    return rotated
 
+
+N,M,K = map(int,input().split()) 
 stickers = []
 for _ in range(K):
-    # R*C 사이즈의 스티커
     R,C = map(int,input().split())
     longer = max(R,C)
 
@@ -15,18 +20,9 @@ for _ in range(K):
         row = list(map(int,input().split()))
         for j in range(C):
             rotate0[i][j] = row[j]
-    rotate90 = [[0]*longer for _ in range(longer)]
-    for i in range(longer):
-        for j in range(longer):
-            rotate90[j][longer-1-i] = rotate0[i][j]
-    rotate180 = [[0]*longer for _ in range(longer)]
-    for i in range(longer):
-        for j in range(longer):
-            rotate180[j][longer-1-i] = rotate90[i][j]
-    rotate270 = [[0]*longer for _ in range(longer)]
-    for i in range(longer):
-        for j in range(longer):
-            rotate270[j][longer-1-i] = rotate180[i][j]
+    rotate90 = rotate(rotate0,longer)
+    rotate180 = rotate(rotate90,longer)
+    rotate270 = rotate(rotate180,longer)
 
     rotations = [None]*4
     if R<C: # 가로가 더 길면
@@ -42,40 +38,27 @@ for _ in range(K):
 
     stickers.append(rotations)
 
-# stick[i] 에는 각 스티커의 0,90,180,270 이 들어 있음
-# (가장 위쪽 최우선 => 가장 왼쪽 우선)으로 붙이기를 이동하면서 시도함
+
 # 못 붙이겠다면 90도 회전 시킨 뒤 시도함
-
-# N*M의 그리드
 grid = [[0]*M for _ in range(N)]
-# 스티커 K개 붙이기
-for i in range(K):
-    # 현재 스티커
-    cur_sticker = stickers[i]
+for i in range(K): # 스티커 K개 붙이기
+    cur_sticker = stickers[i] # stickers[i] 에는 각 스티커의 0,90,180,270 이 들어 있음
 
-    # 4방향 회전
     for j in range(4):
-        # 현재 회전시킨 스티커
         rotated_sticker = cur_sticker[j]
         row,col = len(rotated_sticker), len(rotated_sticker[0])
-        # 왼쪽 위 부터
         is_used = False
-        for q in range(N-row+1):
-            if is_used: break
-
-            for w in range(M-col+1):
-                if q+row > N or w+col >M:
-                    break
-
+        for q in range(N-row+1): # (가장 위쪽 최우선)으로 붙이기를 이동하면서 시도함
+            if is_used: break 
+            for w in range(M-col+1): # => 다음으로 왼쪽 우선
+                if q+row > N or w+col >M: break
                 if is_used: break
-
-                # 가능성 판정
-                is_ok = True
+                is_ok = True # 가능성 판정
                 for e in range(row):
                     for r in range(col):
                         if grid[q+e][w+r] == 1 and rotated_sticker[e][r] == 1:
                             is_ok = False
-                if is_ok:
+                if is_ok: # 실제로 붙이기
                     for e in range(row):
                         for r in range(col):
                             if rotated_sticker[e][r]:
