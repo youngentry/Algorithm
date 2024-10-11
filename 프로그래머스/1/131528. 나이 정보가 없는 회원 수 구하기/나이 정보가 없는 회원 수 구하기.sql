@@ -1,0 +1,6 @@
+-- 코드를 입력하세요
+SELECT COUNT(*) AS USERS
+FROM USER_INFO 
+WHERE AGE IS NULL
+# USER_ID, GENDER, AGE, JOINED는 각각 
+# 회원 ID, 성별, 나이, 가입일
